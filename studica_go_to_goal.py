@@ -527,4 +527,3 @@ class GoToGoal(Node):
 #             f"dx={dx:.3f} dy={dy:.3f} | "
 #             f"vx={vx:.3f} vy={-vy:.3f} wz={-wz:.3f}"
 #         )
-

@@ -1,0 +1,25 @@
+[INFO] [1772717579.703567253] [go_to_goal_hack]: ⚡ GoToGoalHack target=(1.000,0.000,90.0°)
+[INFO] [1772717581.010275303] [go_to_goal_hack]: 📍 Odom synced at (0.952,-0.008,-2.17°)
+[INFO] [1772717589.366354003] [go_to_goal_hack]: 🎯 Goal reached x=0.972 y=-0.004 th=87.52
+[INFO] [1772717589.791442169] [go_to_goal_hack]: ⚡ GoToGoalHack target=(1.000,0.000,270.0°)
+[INFO] [1772717589.865668994] [go_to_goal_hack]: 📍 Odom synced at (0.972,-0.004,88.05°)
+[INFO] [1772717601.644593004] [go_to_goal_hack]: 🎯 Goal reached x=0.953 y=0.021 th=-87.63
+[INFO] [1772717602.091787374] [go_to_goal_hack]: ⚡ GoToGoalHack target=(0.000,0.000,270.0°)
+[INFO] [1772717602.144248891] [go_to_goal_hack]: 📍 Odom synced at (0.953,0.022,-87.72°)
+[INFO] [1772717612.086113516] [go_to_goal_hack]: 🎯 Goal reached x=0.049 y=-0.046 th=-87.88
+[INFO] [1772717612.502115898] [go_to_goal_hack]: ⚡ GoToGoalHack target=(0.000,0.000,180.0°)
+[INFO] [1772717612.595196563] [go_to_goal_hack]: 📍 Odom synced at (0.049,-0.046,-87.77°)
+[INFO] [1772717619.826854760] [go_to_goal_hack]: 🎯 Goal reached x=0.045 y=-0.034 th=-177.14
+==================================================
+  Starting pick-and-place task sequence
+==================================================
+
+=== Task 1: ===
+✅ Done (1.000,0.000,90.0°)
+✅ Done (1.000,0.000,270.0°)
+✅ Done (0.000,0.000,270.0°)
+✅ Done (0.000,0.000,180.0°)
+
+==================================================
+  ✅ All tasks completed!
+==================================================
