@@ -1,0 +1,21 @@
+[INFO] [1772716563.120434281] [go_to_goal_hack]: ⚡ GoToGoalHack target=(1.000,0.000,90.0°)
+[INFO] [1772716563.334609608] [go_to_goal_hack]: 📍 Odom synced at (0.992,0.025,88.69°)
+[WARN] [1772716578.001785383] [go_to_goal_hack]: ⏱️  Goal timeout (15.0s > 15.0s). Stopping.
+[INFO] [1772716578.415804795] [go_to_goal_hack]: ⚡ GoToGoalHack target=(1.000,0.000,270.0°)
+[INFO] [1772716578.456434181] [go_to_goal_hack]: 📍 Odom synced at (0.992,0.025,88.69°)
+[WARN] [1772716593.417787869] [go_to_goal_hack]: ⏱️  Goal timeout (15.0s > 15.0s). Stopping.
+[INFO] [1772716593.865080193] [go_to_goal_hack]: ⚡ GoToGoalHack target=(0.000,0.000,270.0°)
+[INFO] [1772716596.339448191] [go_to_goal_hack]: 📍 Odom synced at (0.993,0.028,88.53°)
+[WARN] [1772716608.886165180] [go_to_goal_hack]: ⏱️  Goal timeout (15.0s > 15.0s). Stopping.
+==================================================
+  Starting pick-and-place task sequence
+==================================================
+
+=== Task 1: ===
+✅ Done (1.000,0.000,90.0°)
+✅ Done (1.000,0.000,270.0°)
+✅ Done (0.000,0.000,270.0°)
+
+==================================================
+  ✅ All tasks completed!
+==================================================
