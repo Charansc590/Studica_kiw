@@ -29,25 +29,26 @@ class GoToGoal(Node):
         self.thg = math.radians(thg_deg)
 
         # -------- GAINS --------
-        self.kp = 1.3  
-        self.kd = 0.01
-        self.kp_th = 2.0
-        self.kd_th = 0.1
+        self.kp = 1.5  
+        self.kd = 0.008
+        self.kp_th = 1.8
+        self.kd_th = 0.08
+        self.deriv_alpha = 0.4  # Low-pass filter for derivatives
 
         # -------- LIMITS --------
-        self.vmax = 0.7
+        self.vmax = 0.75
         self.wmax = 1.0
 
         # -------- TOLERANCES --------
-        self.pos_tol = 0.05
-        self.ang_tol = 0.05
+        self.pos_tol = 0.03
+        self.ang_tol = 0.03
 
         # -------- MIN SPEED --------
-        self.min_speed = 0.25 
-        self.min_ang_speed = 0.40
+        self.min_speed = 0.15 
+        self.min_ang_speed = 0.25
 
         # -------- SLOW ZONE --------
-        self.slow_dist = 0.10
+        self.slow_dist = 0.03
         self.align_dist = 0.05
 
         # -------- STATE --------
@@ -66,9 +67,13 @@ class GoToGoal(Node):
         self.prev_vx = 0.0
         self.prev_vy = 0.0
         self.prev_wz = 0.0
+        
+        self.filt_dex = 0.0
+        self.filt_dey = 0.0
+        self.filt_deth = 0.0
 
-        self.acc_lin = 0.2
-        self.acc_ang = 0.2
+        self.acc_lin = 0.5
+        self.acc_ang = 0.5
 
         self.done = False
         self.prev_time = time.time()
@@ -200,13 +205,15 @@ class GoToGoal(Node):
         if abs(ex) > self.pos_tol:
 
             dex = (ex-self.prev_ex)/dt
-            vx = self.kp*ex + self.kd*dex
+            self.filt_dex = self.deriv_alpha*dex + (1-self.deriv_alpha)*self.filt_dex
+            vx = self.kp*ex + self.kd*self.filt_dex
 
             if abs(vx) < self.min_speed:
                 vx = math.copysign(self.min_speed,vx)
 
         else:
             vx = 0
+            self.filt_dex = 0.0
 
         self.prev_ex = ex
 
@@ -215,13 +222,15 @@ class GoToGoal(Node):
         if abs(ey) > self.pos_tol:
 
             dey = (ey-self.prev_ey)/dt
-            vy = self.kp*ey + self.kd*dey
+            self.filt_dey = self.deriv_alpha*dey + (1-self.deriv_alpha)*self.filt_dey
+            vy = self.kp*ey + self.kd*self.filt_dey
 
             if abs(vy) < self.min_speed:
                 vy = math.copysign(self.min_speed,vy)
 
         else:
             vy = 0
+            self.filt_dey = 0.0
 
         self.prev_ey = ey
 
@@ -230,13 +239,15 @@ class GoToGoal(Node):
         if abs(eth) > self.ang_tol:
 
             deth = (eth-self.prev_eth)/dt
-            wz = self.kp_th*eth + self.kd_th*deth
+            self.filt_deth = self.deriv_alpha*deth + (1-self.deriv_alpha)*self.filt_deth
+            wz = self.kp_th*eth + self.kd_th*self.filt_deth
 
             if abs(wz) < self.min_ang_speed:
                 wz = math.copysign(self.min_ang_speed,wz)
 
         else:
             wz = 0
+            self.filt_deth = 0.0
 
         self.prev_eth = eth
 

@@ -34,6 +34,7 @@ import rclpy
 from rclpy.node import Node
 from rclpy.executors import MultiThreadedExecutor
 from std_msgs.msg import String
+from geometry_msgs.msg import Twist
 import json
 import threading
 import math
@@ -49,6 +50,7 @@ class MissionExecutor(Node):
 
         # ── publishers ────────────────────────────────────────────────────────
         self.status_pub = self.create_publisher(String, '/kiwi/status', 10)
+        self.cmd_vel_pub = self.create_publisher(Twist, '/cmd_vel', 10)
 
         # ── subscribers ───────────────────────────────────────────────────────
         self.create_subscription(String, '/kiwi/waypoints', self._wp_cb,     10)
@@ -106,6 +108,7 @@ class MissionExecutor(Node):
         if self._running:
             self.get_logger().warn("Cancel received — stopping mission after current waypoint")
             self._cancel_flag = True
+            self._stop_robot()
         else:
             self.get_logger().info("Cancel received but no mission running")
 
@@ -217,6 +220,23 @@ class MissionExecutor(Node):
         except Exception as e:
             self.get_logger().error(f"GoToGoal exception at WP {current}: {e}")
             return False
+
+
+    # ── stop robot helper ────────────────────────────────────────────────────
+    def _stop_robot(self):
+        """Publish zero velocity to stop the robot immediately."""
+        try:
+            stop_cmd = Twist()
+            stop_cmd.linear.x = 0.0
+            stop_cmd.linear.y = 0.0
+            stop_cmd.linear.z = 0.0
+            stop_cmd.angular.x = 0.0
+            stop_cmd.angular.y = 0.0
+            stop_cmd.angular.z = 0.0
+            self.cmd_vel_pub.publish(stop_cmd)
+            self.get_logger().info("[STOP] Published 0,0,0 → /cmd_vel")
+        except Exception as e:
+            self.get_logger().error(f"Failed to stop robot: {e}")
 
 
     # ── status publisher helper ────────────────────────────────────────────────
