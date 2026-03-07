@@ -40,8 +40,8 @@ class GoToGoal(Node):
         self.wmax = 1.0
 
         # -------- TOLERANCES --------
-        self.pos_tol = 0.03
-        self.ang_tol = 0.03
+        self.pos_tol = 0.02
+        self.ang_tol = 0.01
 
         # -------- MIN SPEED --------
         self.min_speed = 0.15 
