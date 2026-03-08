@@ -217,7 +217,7 @@ import rclpy
 from rclpy.node import Node
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import TransformStamped
-from std_msgs.msg import Float32MultiArray
+from std_msgs.msg import Float32MultiArray, Bool
 from sensor_msgs.msg import Imu
 import tf_transformations
 import tf2_ros
@@ -237,10 +237,7 @@ class EncoderIMUFused(Node):
         self.ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1)
 
         # 🔥 FORCE ESP32 RESET
-        self.ser.setDTR(False)
-        time.sleep(0.2)
-        self.ser.setDTR(True)
-        time.sleep(2.0)   # wait for ESP to reboot
+        self.reset_esp32()
 
         self.packet_size = 48  # 12 floats
         self.header_size = 2   # 0xAA 0x55
@@ -275,6 +272,8 @@ class EncoderIMUFused(Node):
 
         self.tf_broadcaster = tf2_ros.TransformBroadcaster(self)
 
+        self.reset_sub = self.create_subscription(Bool, '/odom/reset', self.on_reset_requested, 10)
+
         self.timer = self.create_timer(0.02, self.update)
 
         self.get_logger().info("✅ Encoder + IMU fused node started (ESP auto-reset enabled)")
@@ -282,6 +281,34 @@ class EncoderIMUFused(Node):
     # --------------------------------------------------
     def steps_to_velocity(self, dsteps, dt):
         return (dsteps / self.CPR) * self.CIRC / dt
+
+    # --------------------------------------------------
+    def reset_esp32(self):
+        """Reset the ESP32 via DTR pin"""
+        self.get_logger().info("🔄 Resetting ESP32...")
+        self.ser.setDTR(False)
+        time.sleep(0.2)
+        self.ser.setDTR(True)
+        time.sleep(2.0)   # wait for ESP to reboot
+        self.get_logger().info("✅ ESP32 reset complete")
+
+    # --------------------------------------------------
+    def reset_odometry(self):
+        """Reset odometry pose values to zero"""
+        self.get_logger().info("🔄 Resetting Odometry state...")
+        self.x = 0.0
+        self.y = 0.0
+        self.th = 0.0
+        self.prev_steps = {'fl': 0, 'fr': 0, 'b': 0}
+        self.prev_time = time.time()
+        self.get_logger().info("✅ Odometry reset to (0, 0, 0)")
+
+    # --------------------------------------------------
+    def on_reset_requested(self, msg: Bool):
+        """Callback for /odom/reset topic"""
+        if msg.data:
+            self.reset_esp32()
+            self.reset_odometry()
 
     # --------------------------------------------------
     def read_serial_packet(self):
