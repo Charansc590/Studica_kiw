@@ -40,8 +40,8 @@ import threading
 import math
 
 # ── import your GoToGoal class ────────────────────────────────────────────────
-from studica_go_to_goal import GoToGoal
-
+# from studica_go_to_goal import GoToGoal
+from g2g import GoToGoal 
 
 class MissionExecutor(Node):
 

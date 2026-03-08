@@ -37,15 +37,15 @@ class GoToGoal(Node):
 
         # -------- LIMITS --------
         self.vmax = 0.75
-        self.wmax = 1.0
+        self.wmax = 1.50
 
         # -------- TOLERANCES --------
         self.pos_tol = 0.02
         self.ang_tol = 0.01
 
         # -------- MIN SPEED --------
-        self.min_speed = 0.15 
-        self.min_ang_speed = 0.25
+        self.min_speed = 0.24 
+        self.min_ang_speed = 0.3
 
         # -------- SLOW ZONE --------
         self.slow_dist = 0.03
@@ -213,7 +213,6 @@ class GoToGoal(Node):
 
         else:
             vx = 0
-            self.filt_dex = 0.0
 
         self.prev_ex = ex
 
@@ -230,7 +229,6 @@ class GoToGoal(Node):
 
         else:
             vy = 0
-            self.filt_dey = 0.0
 
         self.prev_ey = ey
 
@@ -247,7 +245,6 @@ class GoToGoal(Node):
 
         else:
             wz = 0
-            self.filt_deth = 0.0
 
         self.prev_eth = eth
 
